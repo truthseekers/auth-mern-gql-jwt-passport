@@ -1,0 +1,21 @@
+TODO: ** Separate the User from the band. Should be able to have different people login to the dashboard for the band.
+ex. the Drummer, guitarist, and band manager should all be able to log in and do stuff.
+
+*** I think "login" and currentUser is a candidate for fragments
+    - So is the "user" object in the auth payload, login, and signup.
+
+
+- Figure out Error handling. Docs here are trash: https://www.apollographql.com/docs/apollo-server/data/errors/#for-client-responses   use it in a tutorial. do reddit question on how/when to throw errors
+
+
+- Figure out proper way to do GraphQL Responses?
+    - Do I really need to make a separate response type for every mutation? SongResponse, AlbumResponse, etc.. to handle the status & message + the actual object? seems like a lot.
+
+// Was using mongoose "mongoose": "^7.0.1",  but the mongo-cursor-pagination package has some bugs or issues I don't know how to deal with.
+so until they fix it or I can upgrade the free Mongodb to 6.0, I need to use mongoose ^6.8.4.
+
+https://github.com/mixmaxhq/mongo-cursor-pagination/issues/349#issuecomment-1497565780
+
+
+Really need to see if I can do the "data integrity" thing where by deleting a song, it deletes all the IDS associated with it.
+so the promotion.promotionQueueIds array if it has an ID referencing a song that is about to be deleted, it will remove it from the array.

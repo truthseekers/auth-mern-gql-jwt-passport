@@ -1,0 +1,3 @@
+gcloud run deploy
+
+us-west2

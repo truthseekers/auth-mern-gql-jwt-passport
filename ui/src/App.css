@@ -1,0 +1,43 @@
+.p-2 {
+  padding: 15px;
+}
+
+.m-2 {
+  margin: 15px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.blue {
+  color: blue;
+}
+
+.bg-lightgray {
+  background: lightgray;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+.break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+.list-style-none {
+  list-style-type: none;
+}

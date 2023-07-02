@@ -1,0 +1,5 @@
+form validation.
+
+There's a problem with the "user id" not being passed in as a variable occasionally. It's sporadic and i'm not exactly sure how to reproduce it.
+
+I am GUESSING it's the jwt expiring, and the page not refreshing, so when the user goes to submit the form, the user has been invalidated and the user id no longer works? That's a guess.

@@ -1,0 +1,51 @@
+The "Promo" thing is a bit complicated so here's a dedicated page explaining it.
+
+Summary:
+
+artists can place "advertisements" on other artists music via "songs", "genres", and "artists". So when a listener listens to a song, if it's a song, artist, or genre that has a promotion attached to it, and it's the users turn to listen to a song, it will "trigger" a promotion, and the "advertisement" song will be added to the listeners playlist. 
+
+Step 1. CreatePromotion:
+
+A promotion contains the user the promotion belongs to (userId), the songID to advertise a song, times to play promotion, amount of money invested into the ad, genreIds, songIds, and artistIds the promo will be attached to.
+
+in the createPromotion mutation we get all the promotionQueues ids that correspond to the genreIds, songIds, and artistIds.
+
+the promotion is saved with all the queues that will be used in the ad... in the promotionQueueIds field.
+
+The promotion's ID is stored in each of the promotionQueueIds "currentPromotionIds" array. Each queue has a list of active promotions.
+
+Step 2. TriggerPromotion:
+
+If the user's "nextPromoIn" property has 0 or less, its time to play a promo song. Check the users "promotionType" property to see if they're going to listen to an ad from a song, artist, or one of the genres promotionQueue.
+
+first, find the promotionQueue that corresponds to the song/artist/genre being listened to that triggered the promo. (remember, each song/artist/genre has its own queue that ads can be placed in.)
+
+Second, after a promotionQueue has been found, we go into its "currentPromotionIds" and select a promotion to play. Multiple musicians can place an ad on a song/genre/artist at once, so we need to figure out which promo will be played. For this we use an increment. So first time we'll play index 0, then index, 1, etc.. so the same promo isn't used every time.
+
+third, find the song attached to that promo, which will be the song being advertised.
+
+Since users can listen to one song first before hearing an ad, we may want to hijack whatever song they chose and play that instead first. but that feature has not been implemented.
+
+Step 3. incrementPromoPlayCount:
+
+This is where the promo song is actually played.
+- increase the num of times the promo has been played (to know when to stop the promo)
+- restart the users "nextPromoIn" to the playFrequency
+- set the promotionQueue's .currentIndex to the next promotion in the list, OR back to the beginning if at the end.
+
+IF its time to delete the promo:
+- remove the promotion from all of the promotionQueues it was placed in.
+- delete the promotion.
+
+
+
+Other Events:
+
+    - Just because you trigger a promotion, doesn't mean the user listens to it. Before adding the 'promo' song to a playlist, we manually add a "promo" property so we can verify the listener actually listened to the promo. This can happen on the "triggerPromotion" mutation if the user continues listening after the promo is triggered.
+
+    - Listen to a song
+        - if the queue is greater than 0, decrease the "nextPromoIn" field on the User object.
+            - nextPromoIn tells app how many songs to listen to before triggering a promo.
+            - must update user state
+            - If "track" obj has a .promo on it and it's been listened to, we know the ad has been heard. So we can increment the "promoPlayCount" on the promotion, so we know how many times the promotion has been played. Must update user state.
+        - If it's "time to listen to a promo" by having a nextPromoIn of <= 0, we run triggerPromotion to find a promotion for the listener to hear, AND add the song to the queue in the playlist so they can hear it after the current song.

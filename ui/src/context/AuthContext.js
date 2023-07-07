@@ -75,6 +75,8 @@ const AuthProvider = ({ navigation, ...props }) => {
 
   // console.log("user in context: ", user);
 
+  // Why doesn't this cause an infinite loop? When the setUser changes the state in the context it should cause this whole thing to start over again.
+  // in the REST version I have to use a useEffect when running fetch()
   useQuery(CURRENTUSER_QUERY, {
     onCompleted: async (data) => {
       console.log("1 authcontext currentUser complete: ", data);
